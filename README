@@ -1,0 +1,10 @@
+#To run srever you have to install python and pip,
+
+install the following modules:
+pip install flask
+pip install Flask-CORS
+
+then run flask server: python app.py 
+you needto do it, to run python examples in website 
+
+

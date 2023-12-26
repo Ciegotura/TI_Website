@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Numpy</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<meta charste="utf-8">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="content">
+    <div id ="head">
+
+    </div>
+    <div id = "body">
+    <div id ="menu"></div>
+    <div id = "code">
+        <div id = "example">
+            Create a NumPy array:
+            <br>
+            import numpy as np
+            <br>
+            arr = np.array([1, 2, 3, 4, 5])
+            <br>
+            print(arr)
+            <br>
+            print(type(arr))
+
+        </div>
+        <div id = "input">
+            <textarea id="pythonCode">import numpy as np
+arr = np.array([1, 2, 3, 4, 5])
+print(arr)
+print(type(arr))</textarea>
+        </div>
+        <p id="run">Run</p>
+        <div id = "output">
+
+        </div>
+
+
+    </div>
+</div>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        //zawsze sprawdzamy czy dokument istnieje 
+        $('#run').click(function () {
+        var pythonCode = $('#pythonCode').val();
+        $.ajax({
+            url: 'http://127.0.0.1:5000/run_python_code',
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ 'code': pythonCode }),
+            success: function (response) {
+                // Podziel tekst na linie i do każdej linii dodaj <br>
+                var lines = response.output.split('\n');
+                var formattedOutput = lines.join("'<br>'") + "<br>";
+                var formattedOutput = response.output.replace(/</g, '[');
+                formattedOutput = formattedOutput.replace(/>/g, ']');
+                formattedOutput = formattedOutput.replace(/\n/g, '<br>') + '<br>';
+                alert('Formatted Output:\n' + formattedOutput);
+                $('#output').html(formattedOutput || response.error);
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    });
+</script>
+
+</body>
+</html>
